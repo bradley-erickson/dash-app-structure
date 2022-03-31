@@ -15,7 +15,7 @@ load_dotenv()
 
 # this is an example API url that produces a fact about a number
 api_url = 'http://numbersapi.com'
-api_key = os.environ['API_KEY']
+api_key = os.environ.get('API_KEY', None)
 header_key = {'x-api-key': api_key}
 
 # create a session and update the headers
