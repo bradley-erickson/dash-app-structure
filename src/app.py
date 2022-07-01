@@ -6,7 +6,6 @@ This is where we define the various css items to fetch as well as the layout of 
 
 # package imports
 import dash
-import dash_labs as dl
 from dash import html
 import dash_bootstrap_components as dbc
 
@@ -20,7 +19,7 @@ dbc_css = 'https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.cs
 
 app = dash.Dash(
     __name__,
-    plugins=[dl.plugins.pages],    # turn on Dash pages
+    use_pages=True,    # turn on Dash pages
     external_stylesheets=[
         dbc_css,
         dbc.themes.BOOTSTRAP,
@@ -47,7 +46,7 @@ def serve_layout():
         [
             navbar,
             dbc.Container(
-                dl.plugins.page_container
+                dash.page_container
             ),
             footer
         ],
