@@ -6,17 +6,15 @@ Depending on the API you are using, you might need to modify the value `x-api-ke
 '''
 
 # package imports
-from dotenv import load_dotenv
 import os
 import requests
 
-# load any environment variables from .env files
-load_dotenv()
+# local imports
+from .settings import API_KEY
 
 # this is an example API url that produces a fact about a number
 api_url = 'http://numbersapi.com'
-api_key = os.environ.get('API_KEY', None)
-header_key = {'x-api-key': api_key}
+header_key = {'x-api-key': API_KEY}
 
 # create a session and update the headers
 # this API does not require any authentication, so we don't need to update the headers

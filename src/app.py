@@ -10,6 +10,7 @@ from dash import html
 import dash_bootstrap_components as dbc
 
 # local imports
+from utils.settings import APP_HOST, APP_PORT, APP_DEBUG, DEV_TOOLS_PROPS_CHECK
 from components import navbar, footer
 
 # This provides dbc styling for non-dbc components.
@@ -29,10 +30,6 @@ app = dash.Dash(
         {   # check if device is a mobile device. This is a must if you do any mobile styling
             'name': 'viewport',
             'content': 'width=device-width, initial-scale=1'
-        },
-        {   # provide a simple description of your application
-            'name': 'description',
-            'content': 'Sample structure of a Dash app.'
         }
     ],
     suppress_callback_exceptions=True,
@@ -58,5 +55,10 @@ app.layout = serve_layout   # set the layout to the serve_layout function
 server = app.server         # the server is needed to deploy the application
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(
+        host=APP_HOST,
+        port=APP_PORT,
+        debug=APP_DEBUG,
+        dev_tools_props_check=DEV_TOOLS_PROPS_CHECK
+    )
 
