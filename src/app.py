@@ -8,21 +8,21 @@ This is where we define the various css items to fetch as well as the layout of 
 import dash
 from dash import html
 import dash_bootstrap_components as dbc
+from flask import Flask
+from flask_login import LoginManager
+import os
 
 # local imports
 from utils.settings import APP_HOST, APP_PORT, APP_DEBUG, DEV_TOOLS_PROPS_CHECK
+from components.login import User, login_store, login_location
 from components import navbar, footer
 
-# This provides dbc styling for non-dbc components.
-# For instance, this will style dcc.Dropdown components like dbc.Select components.
-# All we need to do is set a single class name at the root of the app, see below.
-dbc_css = 'https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.css'
-
+server = Flask(__name__)
 app = dash.Dash(
     __name__,
+    server=server,
     use_pages=True,    # turn on Dash pages
     external_stylesheets=[
-        dbc_css,
         dbc.themes.BOOTSTRAP,
         dbc.icons.FONT_AWESOME
     ],  # fetch the proper css items we want
@@ -36,18 +36,34 @@ app = dash.Dash(
     title='Dash app structure'
 )
 
+server.config.update(SECRET_KEY=os.getenv('SECRET_KEY'))
+
+# Login manager object will be used to login / logout users
+login_manager = LoginManager()
+login_manager.init_app(server)
+login_manager.login_view = '/login'
+
+@login_manager.user_loader
+def load_user(username):
+    """This function loads the user by user id. Typically this looks up the user from a user database.
+    We won't be registering or looking up users in this example, since we'll just login using LDAP server.
+    So we'll simply return a User object with the passed in username.
+    """
+    return User(username)
 
 def serve_layout():
     '''Define the layout of the application'''
     return html.Div(
         [
+            login_location,
             navbar,
+            login_store,
             dbc.Container(
-                dash.page_container
+                dash.page_container,
+                class_name='my-2'
             ),
             footer
-        ],
-        className='dbc' # style things like dbc
+        ]
     )
 
 

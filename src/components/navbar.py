@@ -11,6 +11,7 @@ import dash_bootstrap_components as dbc
 
 # local imports
 from utils.images import logo_encoded
+from components.login import login_info
 
 # component
 navbar = dbc.Navbar(
@@ -43,11 +44,8 @@ navbar = dbc.Navbar(
                                 href='/complex'
                             )
                         ),
-                        dbc.NavItem(
-                            dbc.NavLink(
-                                '404',
-                                href='/url-that-doesnt-exist'
-                            )
+                        html.Div(
+                            login_info
                         )
                     ]
                 ),

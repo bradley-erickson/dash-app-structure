@@ -21,6 +21,7 @@ layout = html.Div(
         html.H1('Home page!'),
         html.Div(
             html.A('Checkout the complex page here.', href='/complex')
-        )
+        ),
+        html.A('/page2', href='/page2')
     ]
 )
