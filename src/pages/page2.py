@@ -6,8 +6,6 @@ from flask_login import current_user
 
 dash.register_page(__name__)
 
-layout = html.Div(id='page-2-auth-content')
-
 logged_out_layout = html.Div(
     [
         'Please login before viewing this page.',
@@ -36,15 +34,10 @@ logged_in_layout = html.Div(
     ]
 )
 
-
-@callback(Output('page-2-auth-content', 'children'), Input('login-status', 'data'))
-def authenticate(logged_in):
-    print(current_user)
-    print(dir(current_user))
-    print(current_user.role)
-    if logged_in:
-        return logged_in_layout
-    return logged_out_layout
+def layout():
+    if not current_user.is_authenticated:
+        return logged_out_layout
+    return logged_in_layout
 
 
 @callback(Output('page-2-content', 'children'), Input('page-2-radios', 'value'))

@@ -1,13 +1,6 @@
-# notes
-'''
-This file creates the 404 not found page.
-If this file is not included, Dash will the same layout shown below.
-If you need a more customized 404 not found page, modify this file.
-'''
-
 # package imports
 import dash
-from dash import html
+from dash import html, dcc, callback, Input, Output
 
 dash.register_page(
     __name__,
@@ -22,6 +15,16 @@ layout = html.Div(
         html.Div(
             html.A('Checkout the complex page here.', href='/complex')
         ),
-        html.A('/page2', href='/page2')
+        html.A('/page2', href='/page2'),
+        dcc.RadioItems(
+            id='radios',
+            options=[{'label': i, 'value': i} for i in ['Orange', 'Blue', 'Red']],
+            value='Orange',
+        ),
+        html.Div(id='content')
     ]
 )
+
+@callback(Output('content', 'children'), Input('radios', 'value'))
+def home_radios(value):
+    return f'You have selected {value}'

@@ -41,10 +41,6 @@ login_card = dbc.Card(
 )
 
 login_location = dcc.Location(id='url-login')
-login_store = dcc.Store(
-    id='login-status',
-    storage_type='session'
-)
 login_info = html.Div(id='user-status-header')
 logged_in_info = html.Div(
     [
@@ -84,7 +80,6 @@ logged_out_info = dbc.NavItem(
 )
 
 @callback(
-    Output('login-status', 'data'),
     Output('user-status-header', 'children'),
     Input('url-login', 'pathname')
 )
@@ -97,7 +92,7 @@ def update_authentication_status(path):
         child = logged_in_info
     else:
         child = logged_out_info
-    return logged_in, child
+    return child
 
 @callback(
     Output('output-state', 'children'),

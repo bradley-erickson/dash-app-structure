@@ -14,7 +14,7 @@ import os
 
 # local imports
 from utils.settings import APP_HOST, APP_PORT, APP_DEBUG, DEV_TOOLS_PROPS_CHECK
-from components.login import User, login_store, login_location
+from components.login import User, login_location
 from components import navbar, footer
 
 server = Flask(__name__)
@@ -57,7 +57,6 @@ def serve_layout():
         [
             login_location,
             navbar,
-            login_store,
             dbc.Container(
                 dash.page_container,
                 class_name='my-2'
