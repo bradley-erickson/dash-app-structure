@@ -6,12 +6,13 @@ https://dash-bootstrap-components.opensource.faculty.ai/docs/components/navbar/
 '''
 
 # package imports
-from dash import html, callback, Output, Input, State
 import dash_bootstrap_components as dbc
+from dash import Input, Output, State, callback, html
 
 # local imports
 from utils.images import logo_encoded
-from components.login import login_info
+
+#from components.login import login_info
 
 # component
 navbar = dbc.Navbar(
@@ -44,9 +45,9 @@ navbar = dbc.Navbar(
                                 href='/complex'
                             )
                         ),
-                        html.Div(
-                            login_info
-                        )
+                        #html.Div(
+                        #    login_info
+                        #)
                     ]
                 ),
                 id='navbar-collapse',

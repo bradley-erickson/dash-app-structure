@@ -1,0 +1,17 @@
+name: dash
+channels:
+
+  - conda-forge
+  - defaults
+
+dependencies:
+    # Base depends
+  - python
+  - pip
+  - dash
+  - pandas
+  #- dash_bootstrap_components
+
+    # Pip-only installs
+  # - pip:
+    
