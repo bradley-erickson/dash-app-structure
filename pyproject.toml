@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tempmon"
+authors = [
+    {name = "Florian Jörg"},
+    {name = "Johannes Karwounopoulos"},
+    {name = "András Szabadi"}
+]
+description = "Monitoring of our clusters"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = []
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+#dependencies = [
+#    "requests",
+#    'importlib-metadata; python_version<"3.8"',
+#]
+dynamic = ["version"]
+
+#[project.scripts]
+#generate_dfs = "tempmon.utils.preprocess_data:generate_dfs"
+
+[tool.setuptools]
+packages = ["tempmon"]
