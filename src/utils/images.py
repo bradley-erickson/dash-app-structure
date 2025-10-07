@@ -1,28 +1,18 @@
-# notes
+# utils/images.py
 '''
-This file is used for handling anything image related.
-I suggest handling the local file encoding/decoding here as well as fetching any external images.
+Read images into the system.
+This file reads each file in as bytes then decodes
+as a base64 image string to display on a webpage
 '''
-
-# package imports
 import base64
 import os
 
-# image CDNs
-image_cdn = 'https://images.dog.ceo/breeds'
+import utils.constants as c
 
-# logo information
-cwd = os.getcwd()
-logo_path = os.path.join(cwd, 'assets', 'logos', 'logo_main.png')
-logo_tunel = base64.b64encode(open(logo_path, 'rb').read())
-logo_encoded = 'data:image/png;base64,{}'.format(logo_tunel.decode())
+_LOGO_PATH = os.path.join(c.PATH.LOGOS, 'logo_main.png')
+_LOGO_BYTES = base64.b64encode(open(_LOGO_PATH, 'rb').read())
+ENCODED_LOGO = c.DASH.BASE64_IMAGE_STR.format(_LOGO_BYTES.decode())
 
-
-def get_dog_image(breed, name):
-    '''
-    This method assumes that you are fetching specific images hosted on a CDN.
-    For instance, random dog pics given a breed.
-    '''
-    if breed and name:
-        return f'{image_cdn}/{breed}/{name}.jpg'
-    return None
+_LOGO_SMALL_PATH = os.path.join(c.PATH.LOGOS, 'logo_small.png')
+_LOGO_SMALL_BYTES = base64.b64encode(open(_LOGO_SMALL_PATH, 'rb').read())
+ENCODED_LOGO_SMALL = c.DASH.BASE64_IMAGE_STR.format(_LOGO_SMALL_BYTES.decode())

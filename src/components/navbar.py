@@ -6,65 +6,37 @@ https://dash-bootstrap-components.opensource.faculty.ai/docs/components/navbar/
 '''
 
 # package imports
-from dash import html, callback, Output, Input, State
+from dash import html, clientside_callback, ClientsideFunction, Output, Input, State
 import dash_bootstrap_components as dbc
 
-# local imports
-from utils.images import logo_encoded
-from components.login import login_info
+import utils.constants as c
+import utils.images
 
-# component
-navbar = dbc.Navbar(
-    dbc.Container(
-        [
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src=logo_encoded, height='30px')),
-                    ],
-                    align='center',
-                    className='g-0',
-                ),
-                href='https://plotly.com',
-                style={'textDecoration': 'none'},
-            ),
-            dbc.NavbarToggler(id='navbar-toggler', n_clicks=0),
-            dbc.Collapse(
-                dbc.Nav(
-                    [
-                        dbc.NavItem(
-                            dbc.NavLink(
-                                'Home',
-                                href='/'
-                            )
-                        ),
-                        dbc.NavItem(
-                            dbc.NavLink(
-                                'Complex Page',
-                                href='/complex'
-                            )
-                        ),
-                        html.Div(
-                            login_info
-                        )
-                    ]
-                ),
-                id='navbar-collapse',
-                navbar=True
-            ),
-        ]
-    ),
-    color='dark',
-    dark=True,
-)
+_PREFIX = 'navbar'
+_TOGGLE = f'{_PREFIX}-navbar'
+_COLLAPSE = f'{_PREFIX}-collapse'
 
-# add callback for toggling the collapse on small screens
-@callback(
-    Output('navbar-collapse', 'is_open'),
-    Input('navbar-toggler', 'n_clicks'),
-    State('navbar-collapse', 'is_open'),
+# if your navbar contains any datetime components
+# make sure to turn this into a function instead
+navbar = dbc.Navbar(dbc.Container([
+    dbc.NavbarBrand([
+        html.Img(
+            height='40px',
+            src=utils.images.ENCODED_LOGO,
+            className='d-none d-md-inline'
+        ),
+        html.Img(
+            height='40px',
+            src=utils.images.ENCODED_LOGO_SMALL,
+            className='d-md-none'
+        ),
+        html.Span('My Application', className='ms-2')
+    ], href='/'),
+]), id=_PREFIX, color=c.BOOTSTRAP.COLOR.DARK, dark=True)
+
+clientside_callback(
+    ClientsideFunction(c.DASH.CLIENTSIDE, 'toggleWithButton'),
+    Output(_COLLAPSE, c.DASH.IS_OPEN),
+    Input(_TOGGLE, c.DASH.N_CLICKS),
+    State(_COLLAPSE, c.DASH.IS_OPEN)
 )
-def toggle_navbar_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open

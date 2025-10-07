@@ -1,5 +1,4 @@
-# pull in components from files in the current directory to make imports cleaner
-from .navbar import navbar
-from .footer import footer
-from .dog_image import create_dog_image_card
-from .number_fact_aio import NumberFactAIO
+# on the chance that we need to import something from this directory
+# we need this empty __init__.py file
+# If you are curious about the function of the __init__.py file, check out the official python documentation
+# https://docs.python.org/3/reference/import.html#regular-packages

@@ -1,23 +1,26 @@
-# notes
+# app.py
 '''
 This file is for housing the main dash application.
 This is where we define the various css items to fetch as well as the layout of our application.
 '''
-
-# package imports
 import dash
 from dash import html
 import dash_bootstrap_components as dbc
 from flask import Flask
-from flask_login import LoginManager
-import os
 
-# local imports
-from utils.settings import APP_HOST, APP_PORT, APP_DEBUG, DEV_TOOLS_PROPS_CHECK
-from components.login import User, login_location
-from components import navbar, footer
+import utils.constants as c
+import utils.settings
+utils.settings.load_settings()
+
+if c.RUNTIME.DEPLOYMENT_TYPE == c.DEPLOYMENT.PRODUCTION:
+    print('Monkey patching for Gevent')
+    from gevent import monkey
+    monkey.patch_all()
+
+import components.navbar
 
 server = Flask(__name__)
+server.config.update(SECRET_KEY=c.RUNTIME.SECRET_KEY)
 app = dash.Dash(
     __name__,
     server=server,
@@ -33,47 +36,29 @@ app = dash.Dash(
         }
     ],
     suppress_callback_exceptions=True,
-    title='Dash app structure'
+    title='Structuring a dash app'
 )
+server = app.server         # the server is needed to deploy the application
 
-server.config.update(SECRET_KEY=os.getenv('SECRET_KEY'))
-
-# Login manager object will be used to login / logout users
-login_manager = LoginManager()
-login_manager.init_app(server)
-login_manager.login_view = '/login'
-
-@login_manager.user_loader
-def load_user(username):
-    """This function loads the user by user id. Typically this looks up the user from a user database.
-    We won't be registering or looking up users in this example, since we'll just login using LDAP server.
-    So we'll simply return a User object with the passed in username.
-    """
-    return User(username)
 
 def serve_layout():
     '''Define the layout of the application'''
     return html.Div(
         [
-            login_location,
-            navbar,
+            components.navbar.navbar,
             dbc.Container(
                 dash.page_container,
                 class_name='my-2'
             ),
-            footer
         ]
     )
 
 
 app.layout = serve_layout   # set the layout to the serve_layout function
-server = app.server         # the server is needed to deploy the application
 
 if __name__ == "__main__":
-    app.run_server(
-        host=APP_HOST,
-        port=APP_PORT,
-        debug=APP_DEBUG,
-        dev_tools_props_check=DEV_TOOLS_PROPS_CHECK
+    app.run(
+        host=c.RUNTIME.HOST,
+        port=c.RUNTIME.PORT,
+        debug=c.RUNTIME.DEBUG,
     )
-

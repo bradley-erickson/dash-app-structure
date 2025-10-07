@@ -1,6 +1,8 @@
 # package imports
 import dash
-from dash import html, dcc, callback, Input, Output
+from dash import html, dcc, clientside_callback, ClientsideFunction, Input, Output
+
+import utils.constants as c
 
 dash.register_page(
     __name__,
@@ -9,22 +11,26 @@ dash.register_page(
     title='Home'
 )
 
+_PREFIX = '_pages-home'
+_RADIO = f'{_PREFIX}-radio'
+_SELECTED = f'{_PREFIX}-selected-radio'
+
 layout = html.Div(
     [
         html.H1('Home page!'),
-        html.Div(
-            html.A('Checkout the complex page here.', href='/complex')
-        ),
-        html.A('/page2', href='/page2'),
+        html.A('Private page', href='/private'),
         dcc.RadioItems(
-            id='radios',
-            options=[{'label': i, 'value': i} for i in ['Orange', 'Blue', 'Red']],
+            id=_RADIO,
+            options=[{c.DASH.LABEL: i, c.DASH.VALUE: i} for i in ['Orange', 'Blue', 'Red']],
             value='Orange',
         ),
-        html.Div(id='content')
+        html.Div('You have selected:'),
+        html.Div(id=_SELECTED)
     ]
 )
 
-@callback(Output('content', 'children'), Input('radios', 'value'))
-def home_radios(value):
-    return f'You have selected {value}'
+clientside_callback(
+    ClientsideFunction(c.DASH.CLIENTSIDE, 'returnValue'),
+    Output(_SELECTED, c.DASH.CHILDREN),
+    Input(_RADIO, c.DASH.VALUE),
+)

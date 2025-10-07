@@ -1,14 +1,8 @@
-FROM python:3.9-slim
-
+FROM python:3.11
 COPY requirements.txt /
-
-RUN pip install -r /requirements.txt \
-	&& rm -rf /root/.cache
-
-COPY src/ ./
-
-ENV ENVIRONMENT_FILE=".env"
-
-EXPOSE 8085
-
-ENTRYPOINT ["gunicorn", "--config", "gunicorn_config.py", "app:server"]
+RUN pip3 install --upgrade pip
+RUN pip3 install -r /requirements.txt
+COPY . /app
+WORKDIR /app/src
+EXPOSE 8000
+CMD ["gunicorn", "-c", "gunicorn.conf.py", "app:server", "-k", "gevent"]

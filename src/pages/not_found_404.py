@@ -1,11 +1,9 @@
-# notes
+# pages/not_found_404.py
 '''
 This file creates the 404 not found page.
 If this file is not included, Dash will the same layout shown below.
 If you need a more customized 404 not found page, modify this file.
 '''
-
-# package imports
 import dash
 from dash import html
 
